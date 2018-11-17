@@ -8,9 +8,6 @@ class predict:
         self.classifier = ft.load_model('model.bin')
 
     def get_surfaces(self, content):
-        """
-        文書を分かち書き
-        """
         tagger = MeCab.Tagger('')
         tagger.parse('')
         surfaces = []
@@ -22,7 +19,7 @@ class predict:
 
         return surfaces
 
-    def tweet_class(self, content):
+    def classify(self, content):
         words = " ".join(self.get_surfaces(content))
         result = self.classifier.predict_proba([words], k=2)
         print(result)
@@ -35,4 +32,4 @@ class predict:
 
 if __name__ == '__main__':
     pre = predict()
-    pre.tweet_class("".join(sys.argv[1:]))
+    pre.classify("".join(sys.argv[1:]))
