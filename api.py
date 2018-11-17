@@ -27,7 +27,7 @@ class Predict:
         return jsonify(result)
 
 
-@app.route("/")
+@app.route("/predict")
 def predict():
     q = request.args.get('q')
     pre = Predict()
