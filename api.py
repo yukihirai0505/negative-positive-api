@@ -1,9 +1,11 @@
-import sys
-import fasttext as ft
 import MeCab
+import fasttext as ft
+from flask import Flask, jsonify, request
+
+app = Flask(__name__)
 
 
-class predict:
+class Predict:
     def __init__(self):
         self.classifier = ft.load_model('model.bin')
 
@@ -11,7 +13,7 @@ class predict:
         tagger = MeCab.Tagger('')
         tagger.parse('')
         surfaces = []
-        node = tagger.parseToNode(content)
+        node = tagger.parseToNode("".join(content))
 
         while node:
             surfaces.append(node.surface)
@@ -22,14 +24,11 @@ class predict:
     def classify(self, content):
         words = " ".join(self.get_surfaces(content))
         result = self.classifier.predict_proba([words], k=2)
-        print(result)
-        estimate = result[0][0]
-        if estimate[0] == "__label__1,":
-            print('positive', estimate[1])
-        elif estimate[0] == "__label__2,":
-            print('negative', estimate[1])
+        return jsonify(result)
 
 
-if __name__ == '__main__':
-    pre = predict()
-    pre.classify("".join(sys.argv[1:]))
+@app.route("/")
+def predict():
+    q = request.args.get('q')
+    pre = Predict()
+    return pre.classify(q)
