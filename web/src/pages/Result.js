@@ -19,7 +19,22 @@ class Result extends Component {
 
   render() {
     const { handleSignOut, result } = this.props
-    console.log(result)
+    const positiveTopThree = result && result.sort((a, b) => {
+      const alabels = a[1][0]
+      const blabels = b[1][0]
+      const aVal = alabels.filter(arr => arr[0] === '__label__1,')[0][1]
+      const bVal = blabels.filter(arr => arr[0] === '__label__1,')[0][1]
+      return bVal - aVal
+    }).slice(0, 10)
+    const negativeTopThree = result && result.sort((a, b) => {
+      const alabels = a[1][0]
+      const blabels = b[1][0]
+      const aVal = alabels.filter(arr => arr[0] === '__label__2,')[0][1]
+      const bVal = blabels.filter(arr => arr[0] === '__label__2,')[0][1]
+      return bVal - aVal
+    }).slice(0, 10)
+    console.dir(positiveTopThree)
+    console.dir(negativeTopThree)
     return (
       <div>
         <div onClick={this.clickScreen}>
@@ -27,13 +42,22 @@ class Result extends Component {
             ログアウト
           </button>
         </div>
-        {result && result.map(data => {
+        <p>ポジティブツイートトップ10</p>
+        {positiveTopThree && positiveTopThree.map(data => {
           const text = data[0]
-          const labels = data[1]
-          console.dir(labels)
+          const labels = data[1][0]
           return (<div>
-            {text.slice(0, 30)}
             {labels[0]}
+            {text}
+          </div>)
+        })}
+        <p>ネガティブツイートトップ10</p>
+        {negativeTopThree && negativeTopThree.map(data => {
+          const text = data[0]
+          const labels = data[1][0]
+          return (<div>
+            {labels[0]}
+            {text}
           </div>)
         })}
       </div>
