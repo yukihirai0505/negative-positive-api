@@ -49,13 +49,14 @@ class SignIn extends Component {
     super(props)
   }
 
-  async componentDidMount() {}
+  async componentDidMount() {
+  }
 
   render() {
     const { classes } = this.props
     return (
       <main className={classes.main}>
-        <CssBaseline />
+        <CssBaseline/>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h5">
             NegaPosi Check Sign In
@@ -70,7 +71,7 @@ class SignIn extends Component {
               color="primary"
               className={classes.submit}
             >
-              <FontAwesomeIcon icon={['fab', 'twitter']} />
+              <FontAwesomeIcon icon={['fab', 'twitter']}/>
             </Button>
           </form>
         </Paper>
