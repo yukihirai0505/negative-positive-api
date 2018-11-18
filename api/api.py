@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 import MeCab
 import fasttext as ft
@@ -72,7 +73,7 @@ def diagnosis():
         if req.status_code == 200:
             tweets = json.loads(req.text)
             for tweet in tweets:
-                text = tweet['text']
+                text = format_text(tweet['text'])
                 results.append((text, pre.classify(text)))
             max_id = tweets[-1]['id_str']
             return get_tweet({'count': count, 'max_id': max_id}, num + 1)
@@ -83,3 +84,13 @@ def diagnosis():
     return jsonify({
         'data': get_tweet({'count': count})
     })
+
+
+def format_text(text):
+    text = re.sub(r'https?://[\w/:%#\$&\?\(\)~\.=\+\-…]+', "", text)
+    text = re.sub(r'@[\w/:%#\$&\?\(\)~\.=\+\-…]+', "", text)
+    text = re.sub(r'&[\w/:%#\$&\?\(\)~\.=\+\-…]+', "", text)
+    text = re.sub(';', "", text)
+    text = re.sub('RT', "", text)
+    text = re.sub('\n', " ", text)
+    return text

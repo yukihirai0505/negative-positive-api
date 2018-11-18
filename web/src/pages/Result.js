@@ -28,8 +28,12 @@ class Result extends Component {
           </button>
         </div>
         {result && result.map(data => {
+          const text = data[0]
+          const labels = data[1]
+          console.dir(labels)
           return (<div>
-            {data[0]}
+            {text.slice(0, 30)}
+            {labels[0]}
           </div>)
         })}
       </div>
