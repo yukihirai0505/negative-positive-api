@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { auth, providerTwitter } from './config/firebase'
 import SignIn from './pages/SignIn'
 import Dashboard from './pages/Dashboard'
+import { apiBaseUrl } from './config/app'
 
 class App extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class App extends Component {
       console.log(credential.secret)
       console.log(`================ idToken ================`)
       console.log(idToken)
-      const response = await fetch('http://localhost:5000/diagnosis', {
+      const response = await fetch(`${apiBaseUrl}/diagnosis`, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify({
@@ -70,7 +71,7 @@ class App extends Component {
         result={this.state.result}
       />
     ) : (
-      <SignIn handleLogin={this.handleLogin} />
+      <SignIn handleLogin={this.handleLogin}/>
     )
   }
 }
