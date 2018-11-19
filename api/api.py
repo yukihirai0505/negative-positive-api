@@ -9,13 +9,13 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route('/predict')
+@app.route('/api/predict')
 def predict():
     q = request.args.get('q')
     return jsonify(Predict().classify(q))
 
 
-@app.route('/users', methods=['post'])
+@app.route('/api/users', methods=['post'])
 def save_user_info():
     data = request.get_json(force=True)
     id_token = data['idToken']
@@ -28,7 +28,7 @@ def save_user_info():
     })
 
 
-@app.route('/users/diagnosis', methods=['post'])
+@app.route('/api/users/diagnosis', methods=['post'])
 def diagnosis():
     data = request.get_json(force=True)
     id_token = data['idToken']

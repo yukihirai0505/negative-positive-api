@@ -32,8 +32,10 @@ class App extends Component {
   async componentDidMount() {
     // User
     auth.onAuthStateChanged(async user => {
-      const idToken = await user.getIdToken()
-      await this.fetchDiagnosis(user, idToken)
+      if (user) {
+        const idToken = await user.getIdToken()
+        await this.fetchDiagnosis(user, idToken)
+      }
     })
     const result = await auth.getRedirectResult().catch(error => {
       console.log('redirect result', error)
