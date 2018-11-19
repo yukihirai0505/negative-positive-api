@@ -3,6 +3,7 @@ import { auth, providerTwitter } from './config/firebase'
 import SignIn from './pages/SignIn'
 import Dashboard from './pages/Dashboard'
 import { apiBaseUrl } from './config/app'
+import CircularIndeterminate from './atoms/CircularIndeterminate'
 
 class App extends Component {
   constructor(props) {
@@ -24,16 +25,15 @@ class App extends Component {
     const text = await response.text()
     const { data: result } = JSON.parse(text)
     this.setState({
-      user,
       result
     })
   }
 
   async componentDidMount() {
-    // User
     auth.onAuthStateChanged(async user => {
       if (user) {
         const idToken = await user.getIdToken()
+        this.setState({ user })
         await this.fetchDiagnosis(user, idToken)
       }
     })
@@ -43,12 +43,6 @@ class App extends Component {
     const { user, credential } = result
     if (user && credential) {
       const idToken = await user.getIdToken()
-      console.log(`================ accessToken ================`)
-      console.log(credential.accessToken)
-      console.log(`================ secret ================`)
-      console.log(credential.secret)
-      console.log(`================ idToken ================`)
-      console.log(idToken)
       await fetch(`${apiBaseUrl}/users`, {
         method: 'POST',
         mode: 'cors',
@@ -58,12 +52,12 @@ class App extends Component {
           secret: credential.secret
         })
       })
-      await this.fetchDiagnosis(user, idToken)
     }
   }
 
   handleLogin = e => {
     e.preventDefault()
+    localStorage.setItem('isLoading', '1')
     auth.signInWithRedirect(providerTwitter)
   }
 
@@ -79,11 +73,11 @@ class App extends Component {
   }
 
   render() {
-    const { user } = this.state
+    const { user, result } = this.state
     return user ? (
       <Dashboard
         handleSignOut={this.handleSignOut}
-        result={this.state.result}
+        result={result}
       />
     ) : (
       <SignIn handleLogin={this.handleLogin}/>

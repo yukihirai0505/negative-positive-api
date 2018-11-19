@@ -16,16 +16,19 @@ function SimpleLineChart(props) {
     // 99% per https://github.com/recharts/recharts/issues/172
     <ResponsiveContainer width="99%" height={320}>
       <LineChart
-        data={data.sort((a, b) => moment.utc(a.date).diff(moment.utc(b.date))).slice(0, 20).map(n => {
-          const positive = n.labels.positive
-          const negative = n.labels.negative
-          const date = moment(n.date).format('MMM Do')
-          return {
-            date,
-            positive,
-            negative
-          }
-        })}
+        data={data
+          .sort((a, b) => moment.utc(a.date).diff(moment.utc(b.date)))
+          .slice(0, 20)
+          .map(n => {
+            const positive = n.labels.positive
+            const negative = n.labels.negative
+            const date = moment(n.date).format('MMM Do')
+            return {
+              date,
+              positive,
+              negative
+            }
+          })}
       >
         <XAxis dataKey="date" />
         <YAxis />
