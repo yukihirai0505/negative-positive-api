@@ -37,7 +37,9 @@ function SimpleTable(props) {
           {data.map((n, key) => {
             return (
               <TableRow key={key}>
-                <TableCell component="th" scope="row">{key + 1}</TableCell>
+                <TableCell component="th" scope="row">
+                  {key + 1}
+                </TableCell>
                 <TableCell numeric>{n.labels.positive}</TableCell>
                 <TableCell numeric>{n.labels.negative}</TableCell>
                 <TableCell>{n.text}</TableCell>

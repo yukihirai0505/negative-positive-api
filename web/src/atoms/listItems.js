@@ -6,19 +6,19 @@ import ListSubheader from '@material-ui/core/ListSubheader'
 import DashboardIcon from '@material-ui/icons/Dashboard'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
-export const mainListItems = (handleSignOut) => (
+export const mainListItems = handleSignOut => (
   <div>
     <ListItem button>
       <ListItemIcon>
-        <DashboardIcon/>
+        <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard"/>
+      <ListItemText primary="Dashboard" />
     </ListItem>
     <ListItem button onClick={handleSignOut}>
       <ListItemIcon>
-        <ExitToAppIcon/>
+        <ExitToAppIcon />
       </ListItemIcon>
-      <ListItemText primary="Logout"/>
+      <ListItemText primary="Logout" />
     </ListItem>
   </div>
 )
