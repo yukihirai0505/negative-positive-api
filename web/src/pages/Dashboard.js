@@ -101,7 +101,7 @@ class Dashboard extends Component {
   static propTypes = {
     handleSignOut: PropTypes.any,
     result: PropTypes.array,
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -111,9 +111,7 @@ class Dashboard extends Component {
     }
   }
 
-  async componentDidMount() {
-
-  }
+  async componentDidMount() {}
 
   handleDrawerOpen = () => {
     this.setState({ open: true })
@@ -167,12 +165,18 @@ class Dashboard extends Component {
         {/*{text}*/}
         {/*</div>)*/}
         {/*})}*/}
-        <CssBaseline/>
+        <CssBaseline />
         <AppBar
           position="absolute"
-          className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
+          className={classNames(
+            classes.appBar,
+            this.state.open && classes.appBarShift
+          )}
         >
-          <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
+          <Toolbar
+            disableGutters={!this.state.open}
+            className={classes.toolbar}
+          >
             <IconButton
               color="inherit"
               aria-label="Open drawer"
@@ -182,7 +186,7 @@ class Dashboard extends Component {
                 this.state.open && classes.menuButtonHidden
               )}
             >
-              <MenuIcon/>
+              <MenuIcon />
             </IconButton>
             <Typography
               component="h1"
@@ -195,7 +199,7 @@ class Dashboard extends Component {
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon/>
+                <NotificationsIcon />
               </Badge>
             </IconButton>
           </Toolbar>
@@ -203,33 +207,36 @@ class Dashboard extends Component {
         <Drawer
           variant="permanent"
           classes={{
-            paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose)
+            paper: classNames(
+              classes.drawerPaper,
+              !this.state.open && classes.drawerPaperClose
+            )
           }}
           open={this.state.open}
         >
           <div className={classes.toolbarIcon}>
             <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon/>
+              <ChevronLeftIcon />
             </IconButton>
           </div>
-          <Divider/>
+          <Divider />
           <List>{mainListItems}</List>
-          <Divider/>
+          <Divider />
           <List>{secondaryListItems}</List>
         </Drawer>
         <main className={classes.content}>
-          <div className={classes.appBarSpacer}/>
+          <div className={classes.appBarSpacer} />
           <Typography variant="h4" gutterBottom component="h2">
             Orders
           </Typography>
           <Typography component="div" className={classes.chartContainer}>
-            <SimpleLineChart/>
+            <SimpleLineChart />
           </Typography>
           <Typography variant="h4" gutterBottom component="h2">
             Products
           </Typography>
           <div className={classes.tableContainer}>
-            <SimpleTable/>
+            <SimpleTable />
           </div>
         </main>
       </div>

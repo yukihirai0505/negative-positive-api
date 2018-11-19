@@ -65,9 +65,12 @@ class App extends Component {
   render() {
     const { user } = this.state
     return user ? (
-      <Dashboard handleSignOut={this.handleSignOut} result={this.state.result}/>
+      <Dashboard
+        handleSignOut={this.handleSignOut}
+        result={this.state.result}
+      />
     ) : (
-      <SignIn handleLogin={this.handleLogin}/>
+      <SignIn handleLogin={this.handleLogin} />
     )
   }
 }
