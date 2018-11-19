@@ -3,11 +3,7 @@ from flask_cors import CORS
 
 from services.predict import Predict
 from services.twitter import Twitter
-
-# firebase_path = os.path.join(os.path.dirname(__file__), 'firebase.json')
-#
-# cred = credentials.Certificate(firebase_path)
-# firebase_admin.initialize_app(cred)
+from services.firebase import Firebase
 
 app = Flask(__name__)
 CORS(app)
@@ -19,11 +15,25 @@ def predict():
     return jsonify(Predict().classify(q))
 
 
-@app.route('/diagnosis', methods=['post'])
-def diagnosis():
+@app.route('/users', methods=['post'])
+def save_user_info():
     data = request.get_json(force=True)
+    id_token = data['idToken']
     access_token = data['accessToken']
     secret = data['secret']
+    firebase = Firebase(id_token)
+    firebase.save_user_info(access_token, secret)
+    return jsonify({
+        'data': 'ok'
+    })
+
+
+@app.route('/users/diagnosis', methods=['post'])
+def diagnosis():
+    data = request.get_json(force=True)
+    id_token = data['idToken']
+    firebase = Firebase(id_token)
+    access_token, secret = firebase.get_user_info()
     twitter = Twitter(access_token, secret, count=200)
 
     return jsonify({

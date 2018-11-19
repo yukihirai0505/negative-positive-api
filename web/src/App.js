@@ -13,10 +13,27 @@ class App extends Component {
     }
   }
 
+  async fetchDiagnosis(user, idToken) {
+    const response = await fetch(`${apiBaseUrl}/users/diagnosis`, {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify({
+        idToken: idToken
+      })
+    })
+    const text = await response.text()
+    const { data: result } = JSON.parse(text)
+    this.setState({
+      user,
+      result
+    })
+  }
+
   async componentDidMount() {
     // User
-    auth.onAuthStateChanged(user => {
-      this.setState({ user })
+    auth.onAuthStateChanged(async user => {
+      const idToken = await user.getIdToken()
+      await this.fetchDiagnosis(user, idToken)
     })
     const result = await auth.getRedirectResult().catch(error => {
       console.log('redirect result', error)
@@ -30,20 +47,16 @@ class App extends Component {
       console.log(credential.secret)
       console.log(`================ idToken ================`)
       console.log(idToken)
-      const response = await fetch(`${apiBaseUrl}/diagnosis`, {
+      await fetch(`${apiBaseUrl}/users`, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify({
+          idToken: idToken,
           accessToken: credential.accessToken,
           secret: credential.secret
         })
       })
-      const text = await response.text()
-      const { data: result } = JSON.parse(text)
-      this.setState({
-        user,
-        result
-      })
+      await this.fetchDiagnosis(user, idToken)
     }
   }
 
