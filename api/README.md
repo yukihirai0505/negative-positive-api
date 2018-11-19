@@ -1,6 +1,7 @@
 ## Setup
 
 ```
+$ pyenv local 3.6.5
 $ python3 -m venv venv
 $ source ./venv/bin/activate
 $ brew install mecab mecab-ipadic

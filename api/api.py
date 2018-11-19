@@ -11,10 +11,10 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from requests_oauthlib import OAuth1Session
 
-firebase_path = os.path.join(os.path.dirname(__file__), 'firebase.json')
-
-cred = credentials.Certificate(firebase_path)
-firebase_admin.initialize_app(cred)
+# firebase_path = os.path.join(os.path.dirname(__file__), 'firebase.json')
+#
+# cred = credentials.Certificate(firebase_path)
+# firebase_admin.initialize_app(cred)
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '../.env')
 load_dotenv(dotenv_path)

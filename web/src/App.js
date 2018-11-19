@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { auth, providerTwitter } from './config/firebase'
 import SignIn from './pages/SignIn'
-import Result from './pages/Result'
+import Dashboard from './pages/Dashboard'
 
 class App extends Component {
   constructor(props) {
@@ -65,7 +65,7 @@ class App extends Component {
   render() {
     const { user } = this.state
     return user ? (
-      <Result handleSignOut={this.handleSignOut} result={this.state.result}/>
+      <Dashboard handleSignOut={this.handleSignOut} result={this.state.result}/>
     ) : (
       <SignIn handleLogin={this.handleLogin}/>
     )
