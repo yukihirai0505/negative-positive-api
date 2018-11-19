@@ -44,7 +44,19 @@ class Predict:
 
     def classify(self, content):
         words = " ".join(self.get_surfaces(content))
-        return self.classifier.predict_proba([words], k=2)
+        result = self.classifier.predict_proba([words], k=2)
+        labels = result[0]
+        first_label = labels[0][0]
+        if first_label == '__label__1,':
+            return {
+                'positive': labels[0][1],
+                'negative': labels[1][1],
+            }
+        else:
+            return {
+                'positive': labels[1][1],
+                'negative': labels[0][1],
+            }
 
 
 @app.route('/predict')
@@ -74,7 +86,13 @@ def diagnosis():
             tweets = json.loads(req.text)
             for tweet in tweets:
                 text = format_text(tweet['text'])
-                results.append((text, pre.classify(text)))
+                results.append(
+                    {
+                        'text': text,
+                        'labels': pre.classify(text),
+                        'date': tweet['created_at']
+                    }
+                )
             max_id = tweets[-1]['id_str']
             return get_tweet({'count': count, 'max_id': max_id}, num + 1)
         else:

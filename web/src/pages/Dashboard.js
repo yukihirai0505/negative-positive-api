@@ -14,9 +14,9 @@ import Badge from '@material-ui/core/Badge'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import NotificationsIcon from '@material-ui/icons/Notifications'
-import { mainListItems, secondaryListItems } from '../components/listItems'
-import SimpleLineChart from '../components/SimpleLineChart'
-import SimpleTable from '../components/SimpleTable'
+import { mainListItems, secondaryListItems } from '../atoms/listItems'
+import SimpleLineChart from '../organisms/SimpleLineChart'
+import SimpleTable from '../organisms/SimpleTable'
 
 const drawerWidth = 240
 
@@ -111,7 +111,8 @@ class Dashboard extends Component {
     }
   }
 
-  async componentDidMount() {}
+  async componentDidMount() {
+  }
 
   handleDrawerOpen = () => {
     this.setState({ open: true })
@@ -122,50 +123,16 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { classes } = this.props
-    // const { handleSignOut, result } = this.props
-    // const positiveTopThree = result && result.sort((a, b) => {
-    //   const alabels = a[1][0]
-    //   const blabels = b[1][0]
-    //   const aVal = alabels.filter(arr => arr[0] === '__label__1,')[0][1]
-    //   const bVal = blabels.filter(arr => arr[0] === '__label__1,')[0][1]
-    //   return bVal - aVal
-    // }).slice(0, 10)
-    // const negativeTopThree = result && result.sort((a, b) => {
-    //   const alabels = a[1][0]
-    //   const blabels = b[1][0]
-    //   const aVal = alabels.filter(arr => arr[0] === '__label__2,')[0][1]
-    //   const bVal = blabels.filter(arr => arr[0] === '__label__2,')[0][1]
-    //   return bVal - aVal
-    // }).slice(0, 10)
-    // console.dir(positiveTopThree)
-    // console.dir(negativeTopThree)
+    const { classes, handleSignOut, result } = this.props
+    const positiveSortResult = result && result.slice().sort((a, b) => {
+      return b.labels.positive - a.labels.positive
+    })
+    const negativeSortResult = result && result.slice().sort((a, b) => {
+      return b.labels.negative - a.labels.negative
+    })
     return (
       <div className={classes.root}>
-        {/*<div onClick={this.clickScreen}>*/}
-        {/*<button className="square_btn" onClick={handleSignOut}>*/}
-        {/*ログアウト*/}
-        {/*</button>*/}
-        {/*</div>*/}
-        {/*<p>ポジティブツイートトップ10</p>*/}
-        {/*{positiveTopThree && positiveTopThree.map(data => {*/}
-        {/*const text = data[0]*/}
-        {/*const labels = data[1][0]*/}
-        {/*return (<div>*/}
-        {/*{labels[0]}*/}
-        {/*{text}*/}
-        {/*</div>)*/}
-        {/*})}*/}
-        {/*<p>ネガティブツイートトップ10</p>*/}
-        {/*{negativeTopThree && negativeTopThree.map(data => {*/}
-        {/*const text = data[0]*/}
-        {/*const labels = data[1][0]*/}
-        {/*return (<div>*/}
-        {/*{labels[0]}*/}
-        {/*{text}*/}
-        {/*</div>)*/}
-        {/*})}*/}
-        <CssBaseline />
+        <CssBaseline/>
         <AppBar
           position="absolute"
           className={classNames(
@@ -186,7 +153,7 @@ class Dashboard extends Component {
                 this.state.open && classes.menuButtonHidden
               )}
             >
-              <MenuIcon />
+              <MenuIcon/>
             </IconButton>
             <Typography
               component="h1"
@@ -197,11 +164,11 @@ class Dashboard extends Component {
             >
               Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            {/*<IconButton color="inherit">*/}
+            {/*<Badge badgeContent={4} color="secondary">*/}
+            {/*<NotificationsIcon/>*/}
+            {/*</Badge>*/}
+            {/*</IconButton>*/}
           </Toolbar>
         </AppBar>
         <Drawer
@@ -216,27 +183,33 @@ class Dashboard extends Component {
         >
           <div className={classes.toolbarIcon}>
             <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
+              <ChevronLeftIcon/>
             </IconButton>
           </div>
-          <Divider />
-          <List>{mainListItems}</List>
-          <Divider />
-          <List>{secondaryListItems}</List>
+          <Divider/>
+          <List>{mainListItems(handleSignOut)}</List>
+          <Divider/>
+          {/*<List>{secondaryListItems}</List>*/}
         </Drawer>
         <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
+          <div className={classes.appBarSpacer}/>
           <Typography variant="h4" gutterBottom component="h2">
-            Orders
+            Chart
           </Typography>
           <Typography component="div" className={classes.chartContainer}>
-            <SimpleLineChart />
+            <SimpleLineChart data={result}/>
           </Typography>
           <Typography variant="h4" gutterBottom component="h2">
-            Products
+            Positive Tweet
           </Typography>
           <div className={classes.tableContainer}>
-            <SimpleTable />
+            <SimpleTable data={positiveSortResult.slice(0, 3)}/>
+          </div>
+          <Typography variant="h4" gutterBottom component="h2">
+            Negative Tweet
+          </Typography>
+          <div className={classes.tableContainer}>
+            <SimpleTable data={negativeSortResult.slice(0, 3)}/>
           </div>
         </main>
       </div>
