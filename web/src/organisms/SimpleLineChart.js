@@ -18,11 +18,11 @@ function SimpleLineChart(props) {
       <LineChart
         data={data
           .sort((a, b) => moment.utc(a.date).diff(moment.utc(b.date)))
-          .slice(0, 20)
+          .slice(0, 50)
           .map(n => {
             const positive = n.labels.positive
             const negative = n.labels.negative
-            const date = moment(n.date).format('MMM Do')
+            const date = moment(n.date).format('YYYY/MM/DD')
             return {
               date,
               positive,
@@ -30,11 +30,17 @@ function SimpleLineChart(props) {
             }
           })}
       >
-        <XAxis dataKey="date" />
+        <XAxis
+          dataKey="date"
+          interval={0}
+          textAnchor="end"
+          tick={{ angle: -90 }}
+          height={80}
+        />
         <YAxis />
         <CartesianGrid vertical={false} strokeDasharray="3 3" />
         <Tooltip />
-        <Legend />
+        <Legend layout='vertical' align='right' verticalAlign='top'/>
         <Line type="monotone" dataKey="positive" stroke="#82ca9d" />
         <Line
           type="monotone"
